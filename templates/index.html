@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- ======= Header ======= -->
+<header id="header" class="d-flex align-items-center">
+  <div class="container d-flex flex-column align-items-center">
+
+    <h1>Sistema de Analise do Mercado de Ações</h1>
+    <h2>Esta aplicação web analisa valores históricos de ações com base no Yahoo Finance</h2>
+    <div class="d-flex justify-content-center form">
+      <form action="{{ url_for('index') }}" method="post">
+        <div class="mb-3">
+          <label for="codigo_ticker" class="form-label">Código Ticker da Empresa</label>
+          <input type="text" class="form-control" name="codigo_ticker" aria-describedby="emailHelp" required>
+          <div id="codigoHelp" class="form-text">Ex: PETR4.SA (Petrobras)</div>
+        </div>
+        <div class="mb-3">
+          <label for="periodo" class="form-label">Período para analisar</label>
+          <input type="text" class="form-control" name="periodo" required>
+          <div id="periodoHelp" class="form-text" 
+          title="1d = 1 DIA
+1w = 1 SEMANA
+1mo = 1 MÊS
+1y = 1 ANO">
+            Verifique a forma correta AQUI: Ex: 6mo para 6 meses
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary"><i class="bi bi-bar-chart-line"></i> Analisar</button>
+      </form>
+    </div>
+
+    {% if methods == 'GET' %}
+      <div id="table" class="justify-content-center align-items-center">
+        <hr>
+        <h3 class="mb-3">Exemplo da análise diaria dos últimos 6 meses das Ações da Petrobras (PETR4.SA)</h3>
+        <hr>
+      </div>
+      <div class="resultado">
+        <h5 class="mb-3">Valor Atual: R$ {{ resultado['atual'] }}</h5>
+        <hr>
+        <h5 class="mb-3">Valor Máximo: R$ {{ resultado['maximo'] }}</h5>
+        <hr>
+        <h5 class="mb-3">Valor Minimo: R$ {{ resultado['minimo'] }}</h5>
+        <hr>
+      </div>
+    {% else %}
+      <div id="table" class="justify-content-center align-items-center">
+        <hr>
+        <h3 class="mb-3">Resultado da análise diaria do PERIODO de {{ periodo_formatado }} das Ações da EMPRESA {{ codigo_ticker }}</h3>
+        <hr>
+      </div>
+      <div class="resultado">
+        <h5 class="mb-3">Valor Atual: R$ {{ resultado['atual'] }}</h5>
+        <hr>
+        <h5 class="mb-3">Valor Máximo: R$ {{ resultado['maximo'] }}</h5>
+        <hr>
+        <h5 class="mb-3">Valor Minimo: R$ {{ resultado['minimo'] }}</h5>
+        <hr>
+      </div>
+    {% endif %}
+    
+  </div>
+</header><!-- End #header -->
+{% endblock %}
